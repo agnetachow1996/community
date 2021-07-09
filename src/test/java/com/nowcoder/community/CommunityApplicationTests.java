@@ -1,0 +1,52 @@
+package com.nowcoder.community;
+
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.nowcoder.community.entity.User;
+import com.nowcoder.community.mapper.UserMapper;
+import com.nowcoder.community.service.AlphaService;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringRunner;
+
+import javax.annotation.Resource;
+import java.io.Serializable;
+import java.util.List;
+
+@RunWith(SpringRunner.class) //让测试运行于Spring测试环境
+@SpringBootTest
+@ContextConfiguration(classes = CommunityApplication.class)
+@MapperScan("com.nowcoder.community.mapper")
+//加载配置文件,communityApplication本身是一个配置文件，此注解通常联合runwith注解使用
+public class CommunityApplicationTests implements ApplicationContextAware {
+
+	//记录当前applicationContext的运行环境
+	private ApplicationContext applicationContext;
+
+	@Autowired
+	private UserMapper userMapper;
+
+	@Override
+	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+		this.applicationContext = applicationContext;
+	}
+
+	@Test
+	public void testApplicationContext(){
+		AlphaService alphaService = this.applicationContext.getBean(AlphaService.class);
+		System.out.println(alphaService.find());
+	}
+
+	@Test
+	public void testSelect() {
+		System.out.println(("----- selectbyID test ------"));
+		User a = userMapper.selectById(111);
+		System.out.println(a);
+	}
+}
