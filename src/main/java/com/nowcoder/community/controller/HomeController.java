@@ -39,7 +39,11 @@ public class HomeController {
                 discussPost.add(map);
             }
         }
+        int pageNum = (int) (page.getTotal()/page.getSize());
         model.addAttribute("discussPost",discussPost);
+
+        model.addAttribute("page",page);
+        model.addAttribute("pageNum",pageNum);
         return "/index";
     }
 }

@@ -150,19 +150,25 @@
 
 				<nav class="mt-5" th:if="${page.total}> 0">
 					<ul class="pagination justify-content-center">
+						<!-- 首页逻辑 -->
 						<li class="page-item">
-							<a class="page-link" th:href="@{${page.getCurrent}(current=1)}">首页</a>
+							<a class="page-link" th:href="@{/index}">首页</a>
 						</li>
-						<li th:class="">
-							<a class="">上一页</a></li>
-						<li th:class="" th:each="">
-							<a class="page-link" th:href="" th:text="${i}">1</a>
+						<!-- 上一页逻辑 遍历页码，只显示五页-->
+						<li th:class="|page-item ${page.getCurrent() == 1?'disable':''}|">
+							<a class="page-link" th:href="@{/index(current=${page.getCurrent()-1})}">上一页</a></li>
+
+						<!-- 样式动态添加 页码的1-X 两条竖线用于拼接动态样式和静态样式-->
+						<li th:class="|page-item ${i == page.getCurrent()?'active':''}|" th:each="i:${#numbers.sequence(page.getCurrent()-2,page.getCurrent()+2)}">
+							<a class="page-link" href="#" th:text="${i}">1</a>
 						</li>
-						<li th:class="|page-item ${discussPosts.pageNum==discussPosts.pages?'disabled':''}|">
-							<a class="page-link" th:href="@{/index(pageNum=${discussPosts.hasNextPage}?${discussPosts.nextPage}:${discussPosts.pages}, orderMode=${orderMode})}">下一页</a>
+						<!--下一页逻辑 -->
+						<li th:class="|page-item ${page.getCurrent() == pageNum?'disabled':''}|">
+							<a class="page-link" th:href="@{/index(current=${page.getCurrent()+1})}">下一页</a>
 						</li>
+						<!--末页逻辑 -->
 						<li class="page-item">
-							<a class="page-link" th:href="@{/index(pageNum=${discussPosts.pages}, orderMode=${orderMode})}">末页</a>
+							<a class="page-link" th:href="@{/index(current=${pageNum})}">末页</a>
 						</li>
 					</ul>
 				</nav>
