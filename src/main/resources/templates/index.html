@@ -159,9 +159,18 @@
 							<a class="page-link" th:href="@{/index(current=${page.getCurrent()-1})}">上一页</a></li>
 
 						<!-- 样式动态添加 页码的1-X 两条竖线用于拼接动态样式和静态样式-->
-						<li th:class="|page-item ${i == page.getCurrent()?'active':''}|" th:each="i:${#numbers.sequence(page.getCurrent()-2,page.getCurrent()+2)}">
-							<a class="page-link" href="#" th:text="${i}">1</a>
+						<li th:class="|page-item ${i == page.getCurrent()?'active':''}|"
+							th:if="${page.getCurrent()<=3}"
+							th:each="i:${#numbers.sequence(1,5)}">
+							<a class="page-link" href="@{/index(current=${i})}" th:text="${i}">1</a>
 						</li>
+
+						<li th:class="|page-item ${i == page.getCurrent()?'active':''}|"
+							th:if="${page.getCurrent()>5 && page.getCurrent()+2 < pageNum}"
+							th:each="i:${#numbers.sequence(page.getCurrent()-2,page.getCurrent()+2)}">
+							<a class="page-link" href="@{/index(current=${i})}" th:text="${i}">1</a>
+						</li>
+
 						<!--下一页逻辑 -->
 						<li th:class="|page-item ${page.getCurrent() == pageNum?'disabled':''}|">
 							<a class="page-link" th:href="@{/index(current=${page.getCurrent()+1})}">下一页</a>
