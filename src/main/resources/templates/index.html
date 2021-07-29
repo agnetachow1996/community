@@ -162,13 +162,19 @@
 						<li th:class="|page-item ${i == page.getCurrent()?'active':''}|"
 							th:if="${page.getCurrent()<=3}"
 							th:each="i:${#numbers.sequence(1,5)}">
-							<a class="page-link" href="@{/index(current=${i})}" th:text="${i}">1</a>
+							<a class="page-link" th:href="@{/index(current=${i})}" th:text="${i}">1</a>
 						</li>
 
 						<li th:class="|page-item ${i == page.getCurrent()?'active':''}|"
-							th:if="${page.getCurrent()>5 && page.getCurrent()+2 < pageNum}"
+							th:if="${page.getCurrent()>=5 && page.getCurrent()+2 <= pageNum}"
 							th:each="i:${#numbers.sequence(page.getCurrent()-2,page.getCurrent()+2)}">
-							<a class="page-link" href="@{/index(current=${i})}" th:text="${i}">1</a>
+							<a class="page-link" th:href="@{/index(current=${i})}" th:text="${i}">1</a>
+						</li>
+
+						<li th:class="|page-item ${i == page.getCurrent()?'active':''}|"
+							th:if="${page.getCurrent()+2 > pageNum}"
+							th:each="i:${#numbers.sequence(page.getCurrent()-2,pageNum)}">
+							<a class="page-link" th:href="@{/index(current=${i})}" th:text="${i}">1</a>
 						</li>
 
 						<!--下一页逻辑 -->
