@@ -3,8 +3,43 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.nowcoder.community.mapper.UserMapperMybatis">
-    <select id="selectPageVo" resultType="com.nowcoder.community.entity.User">
-        SELECT id,name FROM user
+    
+    <sql id="selectFields">
+        id,username,password,salt,email,type,status,activation_code,header_url,create_time
+    </sql>
+
+    <sql id="insertFields">
+        username,password,salt,email,type,status,activation_code,header_url,create_time
+    </sql>
+
+    <select id="selectUserByUsername" parameterType="string" resultType="com.nowcoder.community.entity.User">
+        select <include refid="selectFields"></include> from user where username=#{username}
     </select>
+
+    <select id="selectUserByEmail" parameterType="string" resultType="com.nowcoder.community.entity.User">
+        select <include refid="selectFields"></include> from user where email=#{email}
+    </select>
+
+    <select id="selectUserById" parameterType="string" resultType="com.nowcoder.community.entity.User">
+        select <include refid="selectFields"></include> from user where id=#{id}
+    </select>
+
+    <insert id="insertUser" parameterType="com.nowcoder.community.entity.User" keyProperty="id">
+        insert into user(<include refid="insertFields"></include>)
+        VALUES
+        (#{username},#{password},#{salt},#{email},#{type},#{status},#{activation_code},#{header_url},#{create_time})
+    </insert>
+
+    <update id="updateStatus">
+        update user set status = #{status} where id = #{id}
+    </update>
+
+    <update id="updateHeader">
+        update user set header_url = #{header_url} where id = #{id}
+    </update>
+
+    <update id="updatePassword">
+        update user set password = #{password} where id = #{id}
+    </update>
 
 </mapper>

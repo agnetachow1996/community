@@ -1,5 +1,16 @@
 package com.nowcoder.community.service;
 
-public interface AlphaService {
-    String find();
+import com.nowcoder.community.dao.AlphaDao;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Service
+public class AlphaService {
+    @Autowired
+    private AlphaDao alphaDao;
+
+    public String find() {
+        String s = alphaDao.select();
+        return s;
+    }
 }

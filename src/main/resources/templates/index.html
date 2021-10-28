@@ -10,11 +10,11 @@
 	<link rel="icon" href="https://static.nowcoder.com/images/logo_87_87.png"/>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" crossorigin="anonymous">
 	<link rel="stylesheet" th:href="@{/css/global.css}" />
-	<title>哈哈网-首页</title>
+	<title>牛客网-首页</title>
 </head>
 <body>
 	<div class="nk-container">
-		<!-- 头部 -->
+		<!-- 头部 这里的th:fragment=“header"表示当前header被取名，在thymeleaf模板下这个header可以复用-->
 		<header class="bg-dark sticky-top" th:fragment="header">
 			<div class="container">
 				<!-- 导航 -->

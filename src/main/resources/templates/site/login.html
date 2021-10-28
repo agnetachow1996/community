@@ -98,6 +98,7 @@
 						</div>
 						<div class="col-sm-4">
 							<img th:src="@{/kaptcha}" id="kaptcha" style="width:100px;height:40px;" class="mr-2"/>
+							<!-- href这里写的是js方法，是逻辑，表示当点击该链接时刷新验证码 -->
 							<a href="javascript:refresh_kaptcha()" class="font-size-12 align-bottom">刷新验证码</a>
 						</div>
 					</div>				
@@ -186,7 +187,12 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" crossorigin="anonymous"></script>
 <!--	<script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>-->
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" crossorigin="anonymous"></script>
+	<!-- 全局配置页面global.js 方法后面加的随机数是用于欺骗浏览器，
+	防止浏览器再刷新时发现路径无变化不请求访问
+	 但是服务器会忽略这个参数，并重进返回请求的内容-->
 	<script th:src="@{/js/global.js}"></script>
+	<!-- 这个#XXXX是表示HTML某元素的id，这是根据css的选择器来的，
+	在css中#xxx就是表示通过指定的元素ID来查找元素-->
 	<script>
 		function refresh_kaptcha() {
 			var path = "/kaptcha?p=" + Math.random();

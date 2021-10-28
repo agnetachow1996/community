@@ -3,13 +3,12 @@ package com.nowcoder.community.entity;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
-
-import java.sql.Timestamp;
+import java.util.Date;
 
 @Data
 public class User {
     @TableId("id")
-    private String id;
+    private int id;
 
     @TableField("username")
     private String userName;
@@ -32,5 +31,5 @@ public class User {
     private String headerUrl;
 
     @TableField("create_time")
-    private Timestamp createTime;
+    private Date createTime;
 }
