@@ -1,8 +1,6 @@
 package com.nowcoder.community.controller;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.nowcoder.community.entity.User;
+import com.google.code.kaptcha.Producer;
 import com.nowcoder.community.service.AlphaService;
 import com.nowcoder.community.service.UserSerivce;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,9 +17,6 @@ import java.util.Map;
 public class AlphaController {
     @Autowired
     private AlphaService alphaService;
-
-    @Autowired
-    private UserSerivce userSerive;
 
     @RequestMapping("/hello")
     @ResponseBody

@@ -13,7 +13,7 @@
     </sql>
 
     <select id="selectUserByUsername" parameterType="string" resultType="com.nowcoder.community.entity.User">
-        select <include refid="selectFields"></include> from user where username=#{username}
+        select <include refid="selectFields"></include> from user where username=#{userName}
     </select>
 
     <select id="selectUserByEmail" parameterType="string" resultType="com.nowcoder.community.entity.User">
@@ -27,7 +27,7 @@
     <insert id="insertUser" parameterType="com.nowcoder.community.entity.User" keyProperty="id">
         insert into user(<include refid="insertFields"></include>)
         VALUES
-        (#{username},#{password},#{salt},#{email},#{type},#{status},#{activation_code},#{header_url},#{create_time})
+        (#{userName},#{password},#{salt},#{email},#{type},#{status},#{activationCode},#{headerUrl},#{createTime})
     </insert>
 
     <update id="updateStatus">

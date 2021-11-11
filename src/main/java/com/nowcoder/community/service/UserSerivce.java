@@ -1,6 +1,6 @@
 package com.nowcoder.community.service;
 
-import com.nowcoder.community.dao.LoginTicketMapper;
+import com.nowcoder.community.mapper.LoginTicketMapper;
 import com.nowcoder.community.entity.LoginTicket;
 import com.nowcoder.community.entity.User;
 import com.nowcoder.community.mapper.UserMapper;
@@ -141,13 +141,16 @@ public class UserSerivce implements CommunityConstant {
         User user = userMapperMybatis.selectUserByUsername(username);
         if(user == null){
             map.put("userMsg","用户不存在");
+            return map;
         }
         if(user.getActivationCode() == "0"){
             map.put("activationMsg","用户未激活");
+            return map;
         }
-        String pwd = CommunityUtil.MD5(password);
+        String pwd = CommunityUtil.MD5(password)+user.getSalt();
         if(!pwd.equals(user.getPassword())){
             map.put("loginMsg","密码错误");
+            return map;
         }
         LoginTicket loginTicket = new LoginTicket();
         loginTicket.setUserId(user.getId());
@@ -157,5 +160,10 @@ public class UserSerivce implements CommunityConstant {
         loginTicketMapper.insertLoginTicket(loginTicket);
         map.put("ticket",loginTicket.getTicket());
         return map;
+    }
+
+    public void logout(String ticket){
+        //登出时，将ticket的有效状态改变成1
+        loginTicketMapper.updateLoginTicket(ticket,1);
     }
 }

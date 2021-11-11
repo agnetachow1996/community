@@ -9,7 +9,6 @@ import java.sql.Date;
 @Data
 @TableName("discuss_post")
 public class Discuss {
-    @TableField("id")
     private String id;
     @TableField("user_id")
     private String userID;
