@@ -9,9 +9,9 @@ import java.sql.Date;
 @Data
 @TableName("discuss_post")
 public class Discuss {
-    private String id;
+    private int id;
     @TableField("user_id")
-    private String userID;
+    private int userID;
     @TableField("title")
     private String title;
     @TableField("content")

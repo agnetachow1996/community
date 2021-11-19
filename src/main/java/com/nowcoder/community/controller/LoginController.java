@@ -76,7 +76,6 @@ public class LoginController implements CommunityConstant {
         }else if(result == ACTIVATION_FAILURE){
             model.addAttribute("msg","激活失败。");
             model.addAttribute("target","/index");
-            //return "/site/operate-result";
         }else{
             model.addAttribute("msg","重复激活。");
             model.addAttribute("target","/index");

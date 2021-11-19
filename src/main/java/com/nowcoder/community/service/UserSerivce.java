@@ -43,7 +43,7 @@ public class UserSerivce implements CommunityConstant {
     @Value("${server.servlet.context-path}")
     private String contextPath;
 
-    public User selectUserByID(String ID) {
+    public User selectUserByID(int ID) {
         return userMapper.selectById(ID);
     }
 
@@ -83,7 +83,7 @@ public class UserSerivce implements CommunityConstant {
         }
         //注册用户，需要搞个5位的salt
         user.setSalt(CommunityUtil.generateUUID().substring(0,5));
-        user.setPassword(CommunityUtil.MD5(user.getPassword())+user.getSalt());
+        user.setPassword(CommunityUtil.MD5(user.getPassword()));
         //状态是否被激活,没收到验证码的状态都是0，发送验证码激活
         user.setStatus(0);
         //设置用户激活码
@@ -147,7 +147,7 @@ public class UserSerivce implements CommunityConstant {
             map.put("activationMsg","用户未激活");
             return map;
         }
-        String pwd = CommunityUtil.MD5(password)+user.getSalt();
+        String pwd = CommunityUtil.MD5(password);
         if(!pwd.equals(user.getPassword())){
             map.put("loginMsg","密码错误");
             return map;
@@ -165,5 +165,10 @@ public class UserSerivce implements CommunityConstant {
     public void logout(String ticket){
         //登出时，将ticket的有效状态改变成1
         loginTicketMapper.updateLoginTicket(ticket,1);
+    }
+
+    //从数据库中查出来ticket的值
+    public LoginTicket getTicketValue(String ticket){
+        return loginTicketMapper.selectLoginTicket(ticket);
     }
 }

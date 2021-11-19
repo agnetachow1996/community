@@ -12,7 +12,7 @@ public interface LoginTicketMapper {
     int insertLoginTicket(LoginTicket loginTicket);
 
     //通过ticket找用户，ticket<-->用户
-    @Select({"select user_id,id,ticket,expired from login_ticket ",
+    @Select({"select user_id,id,ticket,status,expired from login_ticket ",
     "where ticket=(#{ticket})"})
     LoginTicket selectLoginTicket(String ticket);
 

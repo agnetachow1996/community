@@ -21,8 +21,21 @@ public class User {
 
     @TableField("email")
     private String email;
+
+    @TableField("type")
     private int type;
+
+    @TableField("status")
     private int status;
+
+    @TableField("activation_code")
+    private String activationCode;
+
+    @TableField("header_url")
+    private String headerUrl;
+
+    @TableField("create_time")
+    private Date createTime;
 
     public int getId() {
         return id;
@@ -104,12 +117,4 @@ public class User {
         return createTime;
     }
 
-    @TableField("activation_code")
-    private String activationCode;
-
-    @TableField("header_url")
-    private String headerUrl;
-
-    @TableField("create_time")
-    private Date createTime;
 }
