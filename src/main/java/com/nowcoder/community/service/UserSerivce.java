@@ -171,4 +171,8 @@ public class UserSerivce implements CommunityConstant {
     public LoginTicket getTicketValue(String ticket){
         return loginTicketMapper.selectLoginTicket(ticket);
     }
+
+    public int updateHeaderUrl(int userId,String headerUrl){
+        return userMapperMybatis.updateHeader(headerUrl,userId);
+    }
 }

@@ -13,7 +13,7 @@ public interface UserMapperMybatis {
 
     void updateStatus(int status,int id);
 
-    void updateHeader(String header_url,int id);
+    int updateHeader(String header_url, int id);
 
     void updatePassword(String password,int id);
 }
