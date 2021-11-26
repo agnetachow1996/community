@@ -20,7 +20,7 @@
         select <include refid="selectFields"></include> from user where email=#{email}
     </select>
 
-    <select id="selectUserById" parameterType="string" resultType="com.nowcoder.community.entity.User">
+    <select id="selectUserById" parameterType="integer" resultType="com.nowcoder.community.entity.User">
         select <include refid="selectFields"></include> from user where id=#{id}
     </select>
 

@@ -28,13 +28,12 @@ function publish() {
 			// 2秒后自动隐藏提示框
 			setTimeout(function(){
 				$("#hintModal").modal("hide");
-				// 刷新页面
+				// code = 0表示成功，需要刷新页面传输数据
 				if (data.code == 0){
 					window.location.reload();
 				}
 			}, 2000);
 		}
-	)
-
-
+	);
+	console.log('content:',content);
 }

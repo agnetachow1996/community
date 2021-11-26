@@ -1,6 +1,5 @@
 package com.nowcoder.community;
 
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.nowcoder.community.entity.User;
 import com.nowcoder.community.mapper.UserMapper;
 import com.nowcoder.community.service.AlphaService;
@@ -14,10 +13,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import javax.annotation.Resource;
-import java.io.Serializable;
-import java.util.List;
 
 @RunWith(SpringRunner.class) //让测试运行于Spring测试环境
 @SpringBootTest
