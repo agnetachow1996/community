@@ -21,7 +21,7 @@ public class DiscussService{
     public IPage<Discuss> selectDiscussPage(Page<Discuss> page) {
         QueryWrapper<Discuss> queryWrapper = new QueryWrapper<>();
         //等于2反正是一种不能显示的状态。
-        queryWrapper.ne("status", 2);
+        queryWrapper.ne("status", 2).orderByAsc("create_time");
         return discussMapper.selectPage(page, queryWrapper);
     }
 

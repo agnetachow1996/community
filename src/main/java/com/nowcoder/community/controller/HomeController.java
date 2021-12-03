@@ -11,10 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 public class HomeController {
@@ -41,7 +38,6 @@ public class HomeController {
         }
         int pageNum = (int) (page.getTotal()/page.getSize());
         model.addAttribute("discussPost",discussPost);
-
         model.addAttribute("page",page);
         model.addAttribute("pageNum",pageNum);
         return "/index";

@@ -36,7 +36,7 @@ public class CommunityUtil {
     }
 
     public static String getJsonString(int code, String msg){
-        return getJsonString(code,msg);
+        return getJsonString(code,msg,null);
     }
     public static String getJsonString(int code){
         return getJsonString(code);
