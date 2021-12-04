@@ -22,6 +22,7 @@ public class DiscussService{
         QueryWrapper<Discuss> queryWrapper = new QueryWrapper<>();
         //等于2反正是一种不能显示的状态。
         queryWrapper.ne("status", 2).orderByAsc("create_time");
+        //System.out.println(discussMapper.selectPage(page, queryWrapper));
         return discussMapper.selectPage(page, queryWrapper);
     }
 

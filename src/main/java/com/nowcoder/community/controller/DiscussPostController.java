@@ -7,6 +7,7 @@ import com.nowcoder.community.entity.User;
 import com.nowcoder.community.mapper.UserMapperMybatis;
 import com.nowcoder.community.service.CommentService;
 import com.nowcoder.community.service.DiscussService;
+import com.nowcoder.community.service.UserSerivce;
 import com.nowcoder.community.util.CommunityConstant;
 import com.nowcoder.community.util.CommunityUtil;
 import com.nowcoder.community.util.HostHolder;
@@ -29,7 +30,7 @@ public class DiscussPostController {
     private DiscussService discussService;
 
     @Autowired
-    private UserMapperMybatis userMapperMybatis;
+    private UserSerivce userSerivce;
 
     @Autowired
     private HostHolder hostHolder;
@@ -58,7 +59,7 @@ public class DiscussPostController {
     public String getDiscussDetail(@PathVariable("discussID") int discussID, Model model, Page page){
         Discuss post = discussService.findDiscussByID(discussID);
         model.addAttribute("post",post);
-        User user = userMapperMybatis.selectUserById(post.getUserID());
+        User user = userSerivce.selectUserByID(post.getUserID());
         model.addAttribute("user",user);
 
         page.setLimit(15);
@@ -70,12 +71,35 @@ public class DiscussPostController {
         if(comments != null) {
             for (Comment item : comments) {
                 Map<String,Object> commentVo = new HashMap<>();
-
-                commentVo.put("user",userMapperMybatis.selectUserById(item.getUserId()));
+                //这个是评论
+                commentVo.put("user",userSerivce.selectUserByID(item.getUserId()));
+                commentVo.put("comment",item);
+                //这个是回复，这里的回复没有设置分页
+                List<Comment> replyList = commentService.findCommentByEntity(
+                        CommunityConstant.ENTITY_TYPE_COMMENT,item.getId(),0,Integer.MAX_VALUE);
+                //再将回复封装成View Object
+                List<Map<String,Object>> replyVoList = new ArrayList<>();
+                if(replyList != null){
+                    for(Comment reply:replyList){
+                        Map<String,Object> replyVo = new HashMap<>();
+                        replyVo.put("reply",reply);
+                        replyVo.put("user",userSerivce.selectUserByID(reply.getUserId()));
+                        //回复目标
+                        User target = reply.getTargetId() == 0 ?
+                                null:userSerivce.selectUserByID(reply.getTargetId());
+                        replyVo.put("target",target);
+                        replyVoList.add(replyVo);
+                    }
+                }
+                commentVo.put("reply",replyVoList);
+                //回复数量
+                int replyCount = commentService.findCommentCount(
+                        CommunityConstant.ENTITY_TYPE_COMMENT,item.getId());
+                commentVo.put("replyCount",replyCount);
                 commentVoList.add(commentVo);
             }
         }
-        model.addAttribute("comments",comments);
+        model.addAttribute("comments",commentVoList);
 
         return "/site/discuss-detail";
     }

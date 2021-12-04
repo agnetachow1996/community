@@ -22,38 +22,11 @@
         limit #{offset}, #{limit}
     </select>
 
-    <select id="selectCommentByEntity" resultType="int">
+    <select id="selectCountByEntity" resultType="int">
         select count(id)
         from comment
         where status = 0
         and entity_type = #{entityType}
         and entity_id = #{entityId}
     </select>
-
-    <select id="selectUserByEmail" parameterType="string" resultType="com.nowcoder.community.entity.User">
-        select <include refid="selectFields"></include> from user where email=#{email}
-    </select>
-
-    <select id="selectUserById" parameterType="integer" resultType="com.nowcoder.community.entity.User">
-        select <include refid="selectFields"></include> from user where id=#{id}
-    </select>
-
-    <insert id="insertUser" parameterType="com.nowcoder.community.entity.User" keyProperty="id">
-        insert into user(<include refid="insertFields"></include>)
-        VALUES
-        (#{userName},#{password},#{salt},#{email},#{type},#{status},#{activationCode},#{headerUrl},#{createTime})
-    </insert>
-
-    <update id="updateStatus">
-        update user set status = #{status} where id = #{id}
-    </update>
-
-    <update id="updateHeader">
-        update user set header_url = #{header_url} where id = #{id}
-    </update>
-
-    <update id="updatePassword">
-        update user set password = #{password} where id = #{id}
-    </update>
-
 </mapper>

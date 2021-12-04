@@ -10,12 +10,12 @@ import java.util.List;
 @Service
 public class CommentService {
     @Autowired
-    private CommentService commentService;
+    private CommentMapper commentMapper;
     public List<Comment> findCommentByEntity(int entityType, int entityId,int offset,int limit){
-        return commentService.findCommentByEntity(entityType,entityId,offset,limit);
+        return commentMapper.selectCommentByEntity(entityType,entityId,offset,limit);
     }
 
     public int findCommentCount(int entityType, int entityId){
-        return commentService.findCommentCount(entityType,entityId);
+        return commentMapper.selectCountByEntity(entityType,entityId);
     }
 }
