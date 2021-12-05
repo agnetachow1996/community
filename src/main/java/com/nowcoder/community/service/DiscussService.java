@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.HtmlUtils;
 
+import java.util.List;
+
 @Service
 public class DiscussService{
     @Autowired
@@ -17,14 +19,6 @@ public class DiscussService{
 
     @Autowired
     private SensitiveFilter sensitiveFilter;
-
-    public IPage<Discuss> selectDiscussPage(Page<Discuss> page) {
-        QueryWrapper<Discuss> queryWrapper = new QueryWrapper<>();
-        //等于2反正是一种不能显示的状态。
-        queryWrapper.ne("status", 2).orderByAsc("create_time");
-        //System.out.println(discussMapper.selectPage(page, queryWrapper));
-        return discussMapper.selectPage(page, queryWrapper);
-    }
 
     public int addDiscussPost(Discuss post){
         if(post == null){
@@ -41,7 +35,11 @@ public class DiscussService{
 
     }
 
-    public Discuss findDiscussByID(int id){
-        return discussMapper.selectById(id);
+    public List<Discuss> selectDiscussPosts(int userId,int offset,int limit){
+        return discussMapper.selectDiscussPosts(userId,offset,limit);
+    }
+
+    public int selectDiscussPostRows(int userId){
+        return discussMapper.selectDiscussPostRows(userId);
     }
 }

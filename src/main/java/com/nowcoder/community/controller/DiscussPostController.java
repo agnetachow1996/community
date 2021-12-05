@@ -91,7 +91,7 @@ public class DiscussPostController {
                         replyVoList.add(replyVo);
                     }
                 }
-                commentVo.put("reply",replyVoList);
+                commentVo.put("replys",replyVoList);
                 //回复数量
                 int replyCount = commentService.findCommentCount(
                         CommunityConstant.ENTITY_TYPE_COMMENT,item.getId());

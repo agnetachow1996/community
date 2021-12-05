@@ -152,9 +152,9 @@
 					</li>
 				</ul>
 
-				<nav class="mt-5" th:if="${page.total}> 0">
+				<nav class="mt-5" th:if="${page.total}> 0" th:fragment="pagination">
 					<ul class="pagination justify-content-center">
-						<!-- 首页逻辑 -->
+						<!-- 首页逻辑 utext能显示转义字符，text不行-->
 						<li class="page-item">
 							<a class="page-link" th:href="@{/index}">首页</a>
 						</li>

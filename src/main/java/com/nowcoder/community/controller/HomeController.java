@@ -22,10 +22,9 @@ public class HomeController {
     private UserSerivce userSerivce;
 
     @RequestMapping(path = "/index", method = RequestMethod.GET)
-    public String getIndexPage(Model model,Page page){
+    public String getIndexPage(Model model){
         //方法调用前，springmvc会自动实例化model和Page,所以分页时不需要传入page变量到前端
-        page.setSize(15);
-        List<Discuss> list = discussService.selectDiscussPage(page).getRecords();
+        List<Discuss> list = discussService.selectDiscussPosts(0,0,15);
         List<Map<String,Object>> discussPost = new ArrayList<>();
         if(list != null){
             for(Discuss item:list){
@@ -36,10 +35,7 @@ public class HomeController {
                 discussPost.add(map);
             }
         }
-        int pageNum = (int) (page.getTotal()/page.getSize());
         model.addAttribute("discussPost",discussPost);
-        model.addAttribute("page",page);
-        model.addAttribute("pageNum",pageNum);
         return "/index";
     }
 }
