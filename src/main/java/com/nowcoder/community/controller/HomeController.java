@@ -1,7 +1,8 @@
 package com.nowcoder.community.controller;
 
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+
 import com.nowcoder.community.entity.Discuss;
+import com.nowcoder.community.entity.Page;
 import com.nowcoder.community.entity.User;
 import com.nowcoder.community.service.DiscussService;
 import com.nowcoder.community.service.UserSerivce;
@@ -22,9 +23,11 @@ public class HomeController {
     private UserSerivce userSerivce;
 
     @RequestMapping(path = "/index", method = RequestMethod.GET)
-    public String getIndexPage(Model model){
+    public String getIndexPage(Model model, Page page){
         //方法调用前，springmvc会自动实例化model和Page,所以分页时不需要传入page变量到前端
-        List<Discuss> list = discussService.selectDiscussPosts(0,0,15);
+        page.setRows(discussService.selectDiscussPostRows(0));
+        page.setPath("/index");
+        List<Discuss> list = discussService.selectDiscussPosts(0,page.getOffset(),page.getLimit());
         List<Map<String,Object>> discussPost = new ArrayList<>();
         if(list != null){
             for(Discuss item:list){

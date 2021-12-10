@@ -56,7 +56,7 @@ public class Page {
         if(rows % limit == 0){
             return rows / limit;
         }else{
-            return (rows / limit);
+            return (rows / limit)+1;
         }
     }
 

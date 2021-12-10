@@ -4,7 +4,6 @@ import com.nowcoder.community.entity.Comment;
 import com.nowcoder.community.entity.Discuss;
 import com.nowcoder.community.entity.Page;
 import com.nowcoder.community.entity.User;
-import com.nowcoder.community.mapper.UserMapperMybatis;
 import com.nowcoder.community.service.CommentService;
 import com.nowcoder.community.service.DiscussService;
 import com.nowcoder.community.service.UserSerivce;
@@ -62,8 +61,8 @@ public class DiscussPostController {
         User user = userSerivce.selectUserByID(post.getUserID());
         model.addAttribute("user",user);
 
-        page.setLimit(15);
-        page.setPath("/discuss/detail" + discussID);
+        page.setLimit(5);
+        page.setPath("/discuss/detail/" + discussID);
         page.setRows(post.getCommentCount());
         List<Comment>comments = commentService.findCommentByEntity(CommunityConstant.ENTITY_TYPE_POST,
                 post.getId(),page.getOffset(),page.getLimit());
@@ -100,7 +99,6 @@ public class DiscussPostController {
             }
         }
         model.addAttribute("comments",commentVoList);
-
         return "/site/discuss-detail";
     }
 }

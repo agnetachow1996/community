@@ -5,11 +5,11 @@
 <mapper namespace="com.nowcoder.community.mapper.DiscussMapper">
 
     <sql id="selectFields">
-        id,user_id,entity_type,entity_id,target_id,status,content,create_time
+        id,user_id,title,type,comment_count,status,content,create_time,score
     </sql>
 
     <sql id="insertFields">
-        username,password,salt,email,type,status,activation_code,header_url,create_time
+        user_id,title,content,type,status,create_time,comment_count,score
     </sql>
 
     <select id="selectDiscussPosts" resultType="com.nowcoder.community.entity.Discuss">
@@ -31,5 +31,16 @@
             and user_id = #{userId}
         </if>
     </select>
+    <select id="findDiscussByID" resultType="com.nowcoder.community.entity.Discuss" parameterType="int">
+        select <include refid="selectFields"></include>
+        from discuss_post
+        where status != 2
+        and id=#{discussID}
+    </select>
+
+    <insert id="insertDiscussPost" parameterType="com.nowcoder.community.entity.Discuss">
+        insert into discuss_post(<include refid="insertFields"></include>)
+        values(#(userId),#(title),#(content),#(type),#(status),#(createTime),#(commentCount),#(score))
+    </insert>
 
 </mapper>

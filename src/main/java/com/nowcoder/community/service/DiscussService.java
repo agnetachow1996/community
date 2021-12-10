@@ -1,8 +1,5 @@
 package com.nowcoder.community.service;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.nowcoder.community.entity.Discuss;
 import com.nowcoder.community.mapper.DiscussMapper;
 import com.nowcoder.community.util.SensitiveFilter;
@@ -31,7 +28,7 @@ public class DiscussService{
         post.setContent(sensitiveFilter.filter(post.getContent()));
         post.setTitle(sensitiveFilter.filter(post.getTitle()));
 
-        return discussMapper.insert(post);
+        return discussMapper.insertDiscussPost(post);
 
     }
 
@@ -41,5 +38,9 @@ public class DiscussService{
 
     public int selectDiscussPostRows(int userId){
         return discussMapper.selectDiscussPostRows(userId);
+    }
+
+    public Discuss findDiscussByID(int discussID){
+        return discussMapper.findDiscussByID(discussID);
     }
 }
