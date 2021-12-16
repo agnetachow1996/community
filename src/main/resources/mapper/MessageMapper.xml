@@ -7,23 +7,65 @@
     <sql id="selectFields">
         id,from_id,to_id,conversation_id,content,status,create_time
     </sql>
+
+    <sql id="insertFields">
+        from_id,to_id,conversation_id,content,status,create_time
+    </sql>
     <select id="selectConversation" resultType="com.nowcoder.community.entity.Message">
         select <include refid="selectFields"></include>
         from message
         where id in(
-           select max(id) from message where status != 2 and id != 1
+           select max(id) from message where status != 2 and from_id != 1
            and (from_id = #{userId} or to_id = #{userId})
            group by conversation_id
         )
         order by id desc
         limit #{offset},#{limit};
     </select>
+
+    <select id="selectConversationCount" resultType="int">
         select count(m.maxid) from (
         select max(id) as maxid from message
-        where status != 2 and id != 1
-        from_id = #{userId} or to_id = #{userId}
+        where status != 2 and from_id != 1
+        and (from_id = #{userId} or to_id = #{userId})
         group by conversation_id) as m;
-    <select id="selectConversationCount" resultType="int">
-
     </select>
+
+    <select id="selectLetters" resultType="com.nowcoder.community.entity.Message">
+        select <include refid="selectFields"></include>
+        from message
+        where status != 2 and from_id != 1
+        and conversation_id = #{ConversationId}
+        order by id desc
+        limit #{offset},#{limit};
+    </select>
+
+    <select id="selectLetterCount" resultType="int">
+        select count(id)
+        from message
+        where status != 2 and from_id != 1
+        and conversation_id = #{ConversationId};
+    </select>
+
+    <select id="selectConversationUnreadCount" resultType="int">
+        select count(id)
+        from message
+        where status = 0 and to_id = #{userId}
+        <if test="ConversationId != null">
+            and conversation_id = #{ConversationId};
+        </if>
+    </select>
+
+    <insert id="insertMessage" parameterType="com.nowcoder.community.entity.Message" keyProperty="id">
+        insert into message(<include refid="insertFields"></include>)
+        values(#{fromId},#{toId},#{conversationId},#{content},#{status},#{createTime})
+    </insert>
+
+    <update id="updateStatus">
+        update message set status = #{status}
+        where id in
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
 </mapper>

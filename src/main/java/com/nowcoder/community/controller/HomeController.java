@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.*;
 
@@ -40,5 +41,10 @@ public class HomeController {
         }
         model.addAttribute("discussPost",discussPost);
         return "/index";
+    }
+
+    @RequestMapping(path = "/error",method = RequestMethod.GET)
+    public String getError(){
+        return "/error/500";
     }
 }

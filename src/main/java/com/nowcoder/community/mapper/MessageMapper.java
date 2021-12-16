@@ -22,4 +22,8 @@ public interface MessageMapper {
 
     //查询未读私信的数量
     int selectConversationUnreadCount(int userId,String ConversationId);
+
+    int insertMessage(Message message);
+
+    int updateStatus(List<Integer> ids,int status);
 }

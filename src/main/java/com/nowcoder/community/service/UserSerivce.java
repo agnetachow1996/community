@@ -175,4 +175,8 @@ public class UserSerivce implements CommunityConstant {
     public int updateHeaderUrl(int userId,String headerUrl){
         return userMapperMybatis.updateHeader(headerUrl,userId);
     }
+
+    public User findUserByName(String userName){
+        return userMapperMybatis.selectUserByUsername(userName);
+    }
 }

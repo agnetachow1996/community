@@ -9,12 +9,16 @@ function send_letter() {
     var toName = $("#recipient-name").val();
     var content = $("#message-text").val();
     $.post(
+        //服务端URL
         CONTEXT_PATH + "letter/send",
+        //向服务器端发送的数据
         {
             "toName": toName,
             "content": content
         },
+        //成功函数
         function (data) {
+        //$.parseJSON() 函数用于将符合标准格式的的JSON字符串转为与之对应的JavaScript对象。
             data = $.parseJSON(data);
             if (data.code === 0) {
                 $("#hintBody").text("发送成功");
