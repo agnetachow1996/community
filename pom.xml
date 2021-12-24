@@ -120,6 +120,13 @@
 			<version>1.2.78</version>
 		</dependency>
 
+		<!-- redis支持 pom文件有父pom,父pom里面都有兼容jar包的版本号，子pom文件就算不写也行-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-redis</artifactId>
+		</dependency>
+
+
 
 
 	</dependencies>

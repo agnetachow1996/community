@@ -81,6 +81,7 @@
 					<div class="media-body">
 						<h5 class="mt-0 text-warning">
 							<span th:text="${user.username}">nowcoder</span>
+<!--							这里加了一个隐藏框，是为了获取用户id的，因为按钮没办法取用户id-->
 							<input type="hidden" id="entityId" th:value="${user.id}">
 							<button type="button" th:class="|btn ${hasFollowed?'btn-secondary':'btn-info'} btn-sm float-right mr-5 follow-btn|"
 									th:text="${hasFollowed?'已关注':'关注TA'}" th:if="${loginUser!=null&&loginUser.id!=user.id}">关注TA</button>

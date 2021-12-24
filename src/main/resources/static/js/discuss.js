@@ -4,7 +4,7 @@ $(function () {
     $("#deleteBtn").click(setDelete);
 })
 
-function like(btn, entityType, entityId, entityUserId, postId) {
+function like(btn, entityType, entityId, entityUserId) {
     $.post(
         CONTEXT_PATH + "like",
         {

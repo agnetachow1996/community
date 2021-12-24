@@ -23,4 +23,9 @@ public interface CommunityConstant {
     * 实体类型：回复
     * */
     int ENTITY_TYPE_COMMENT = 2;
+    /*
+     * 实体类型：用户
+     * */
+    int ENTITY_TYPE_USER = 3;
+
 }

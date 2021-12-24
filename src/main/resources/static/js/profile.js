@@ -10,11 +10,13 @@ function follow() {
 			CONTEXT_PATH + "follow",
 			{
 				"entityType": 3,
+				//$(btn).prev()表示button的前一个元素
 				"entityId":$(btn).prev().val()
 			},
 			function (data){
 				data = $.parseJSON(data);
 				if (data.code === 0){
+				//关注（取关）之后刷新页面，显示为已关注（关注TA）
 					window.location.reload();
 				}else{
 					alert(data.msg);
