@@ -3,7 +3,6 @@ package com.nowcoder.community.service;
 import com.nowcoder.community.mapper.LoginTicketMapper;
 import com.nowcoder.community.entity.LoginTicket;
 import com.nowcoder.community.entity.User;
-import com.nowcoder.community.mapper.UserMapper;
 import com.nowcoder.community.mapper.UserMapperMybatis;
 import com.nowcoder.community.util.CommunityConstant;
 import com.nowcoder.community.util.CommunityUtil;
@@ -19,10 +18,6 @@ import java.util.*;
 
 @Service
 public class UserSerivce implements CommunityConstant {
-
-    //this is mybatis-plus
-    @Autowired
-    private UserMapper userMapper;
 
     //this is mybatis
     @Autowired
@@ -44,12 +39,9 @@ public class UserSerivce implements CommunityConstant {
     private String contextPath;
 
     public User selectUserByID(int ID) {
-        return userMapper.selectById(ID);
+        return userMapperMybatis.selectUserById(ID);
     }
 
-    public List<User> selectAllUser() {
-        return userMapper.selectList(null);
-    }
 
     //实现注册功能
     public Map<String,Object> register(User user) throws IllegalAccessException {

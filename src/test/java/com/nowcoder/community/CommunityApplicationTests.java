@@ -1,7 +1,6 @@
 package com.nowcoder.community;
 
 import com.nowcoder.community.entity.User;
-import com.nowcoder.community.mapper.UserMapper;
 import com.nowcoder.community.service.AlphaService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,9 +23,6 @@ public class CommunityApplicationTests implements ApplicationContextAware {
 	//记录当前applicationContext的运行环境
 	private ApplicationContext applicationContext;
 
-	@Autowired
-	private UserMapper userMapper;
-
 	@Override
 	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
 		this.applicationContext = applicationContext;
@@ -38,10 +34,5 @@ public class CommunityApplicationTests implements ApplicationContextAware {
 		System.out.println(alphaService.find());
 	}
 
-	@Test
-	public void testSelect() {
-		System.out.println(("----- selectbyID test ------"));
-		User a = userMapper.selectById(111);
-		System.out.println(a);
-	}
+
 }

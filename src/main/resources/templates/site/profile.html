@@ -80,11 +80,12 @@
 					<img th:src="${user.headerUrl}" class="align-self-start mr-4 rounded-circle" alt="用户头像" style="width:50px;">
 					<div class="media-body">
 						<h5 class="mt-0 text-warning">
-							<span th:text="${user.username}">nowcoder</span>
+							<span th:text="${user.userName}">nowcoder</span>
 <!--							这里加了一个隐藏框，是为了获取用户id的，因为按钮没办法取用户id-->
 							<input type="hidden" id="entityId" th:value="${user.id}">
 							<button type="button" th:class="|btn ${hasFollowed?'btn-secondary':'btn-info'} btn-sm float-right mr-5 follow-btn|"
 									th:text="${hasFollowed?'已关注':'关注TA'}" th:if="${loginUser!=null&&loginUser.id!=user.id}">关注TA</button>
+<!--							去掉了自己关注自己的情况-->
 						</h5>
 						<div class="text-muted mt-3">
 							<span>注册于 <i class="text-muted" th:text="${#dates.format(user.createTime,'yyyy-MM-dd HH:mm:ss')}">2015-06-12 15:20:12</i></span>

@@ -2,7 +2,6 @@ package com.nowcoder.community.mapper;
 
 import com.nowcoder.community.entity.Message;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 

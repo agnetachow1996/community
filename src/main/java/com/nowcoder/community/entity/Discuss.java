@@ -1,41 +1,27 @@
 package com.nowcoder.community.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.util.Date;
 
 
 @Data
-@TableName("discuss_post")
 public class Discuss {
-    @TableId(type = IdType.AUTO)
     private int id;
-    @TableField("user_id")
     private int userId;
-    @TableField("title")
     private String title;
-    @TableField("content")
     private String content;
-    @TableField("type")
     private int type;
-    @TableField("status")
     private int status;
-    @TableField("create_time")
     private Date createTime;
-    @TableField("comment_count")
     private int commentCount;
-    @TableField("score")
     private int score;
 
     public int getId() {
         return id;
     }
 
-    public int getUserID() {
+    public int getUserId() {
         return userId;
     }
 
@@ -71,7 +57,7 @@ public class Discuss {
         this.id = id;
     }
 
-    public void setUserID(int userID) {
+    public void setUserId(int userID) {
         this.userId = userID;
     }
 

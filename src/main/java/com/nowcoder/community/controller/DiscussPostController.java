@@ -51,7 +51,7 @@ public class DiscussPostController implements CommunityConstant{
         Discuss discuss = new Discuss();
         discuss.setTitle(title);
         discuss.setContent(content);
-        discuss.setUserID(user.getId());
+        discuss.setUserId(user.getId());
         discuss.setCreateTime(new Date());
         discussService.addDiscussPost(discuss);
         //报错情况来统一处理
@@ -62,7 +62,7 @@ public class DiscussPostController implements CommunityConstant{
     public String getDiscussDetail(@PathVariable("discussID") int discussID, Model model, Page page){
         Discuss post = discussService.findDiscussByID(discussID);
         model.addAttribute("post",post);
-        User user = userSerivce.selectUserByID(post.getUserID());
+        User user = userSerivce.selectUserByID(post.getUserId());
         model.addAttribute("user",user);
 
         //获取点赞的数量
