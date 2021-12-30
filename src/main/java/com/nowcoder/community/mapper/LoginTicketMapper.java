@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.*;
 
 //LoginTicket的CURD
 @Mapper
+@Deprecated //表示不推荐使用
 public interface LoginTicketMapper {
     @Insert({"insert into login_ticket(user_id,ticket,status,expired)",
     "values((#{userId}),(#{ticket}),(#{status}),(#{expired}))"})
