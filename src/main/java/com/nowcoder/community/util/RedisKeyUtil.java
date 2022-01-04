@@ -9,6 +9,7 @@ public class RedisKeyUtil {
     private static final String PREFIX_FOLLOWEE = "followee";
     private static final String PREFIX_KAPTCHA = "kaptcha";
     private static final String PREFIX_TICKET = "ticket";
+    private static final String PREFIX_USER = "user";
     //某个实体的赞
     //like:entity:entityType:entityID --> set(userID)
     //使用set集合，集合里面装的是userID,这样之后需要获取谁点赞了也能实现
@@ -43,6 +44,10 @@ public class RedisKeyUtil {
     //登录的凭证
     public static String getTicketKey(String ticket){
         return PREFIX_TICKET + SPLIT + ticket;
+    }
+
+    public static String getUserKey(int userId){
+        return PREFIX_USER + SPLIT + userId;
     }
 
 }

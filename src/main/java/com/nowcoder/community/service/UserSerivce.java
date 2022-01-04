@@ -1,9 +1,8 @@
 package com.nowcoder.community.service;
 
-import com.nowcoder.community.mapper.LoginTicketMapper;
 import com.nowcoder.community.entity.LoginTicket;
 import com.nowcoder.community.entity.User;
-import com.nowcoder.community.mapper.UserMapperMybatis;
+import com.nowcoder.community.mapper.UserMapper;
 import com.nowcoder.community.util.CommunityConstant;
 import com.nowcoder.community.util.CommunityUtil;
 import com.nowcoder.community.util.MailClient;
@@ -16,14 +15,18 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class UserSerivce implements CommunityConstant {
 
     //this is mybatis
     @Autowired
-    private UserMapperMybatis userMapperMybatis;
+    private UserMapper userMapperMybatis;
 
     @Autowired
     private MailClient mailClient;
@@ -43,8 +46,12 @@ public class UserSerivce implements CommunityConstant {
     @Value("${server.servlet.context-path}")
     private String contextPath;
 
-    public User selectUserByID(int ID) {
-        return userMapperMybatis.selectUserById(ID);
+    public User selectUserByID(int id) {
+        User user = getCache(id);
+        if(user == null){
+            user = initCache(id);
+        }
+        return user;
     }
 
 
@@ -114,6 +121,7 @@ public class UserSerivce implements CommunityConstant {
         //新增用户的code和传入的code相同
         else if(user.getActivationCode().equals(code)){
             userMapperMybatis.updateStatus(1,userId);
+            cleanCache(userId);
             return ACTIVATION_SUCCESS;
         }
         else{
@@ -156,25 +164,52 @@ public class UserSerivce implements CommunityConstant {
         loginTicket.setExpired(new Date(System.currentTimeMillis() + expiredSeconds * 1000));
         //loginTicketMapper.insertLoginTicket(loginTicket);
         String redisKey = RedisKeyUtil.getTicketKey(loginTicket.getTicket());
+        redisTemplate.opsForValue().set(redisKey,loginTicket);
         map.put("ticket",loginTicket.getTicket());
         return map;
     }
 
     public void logout(String ticket){
         //登出时，将ticket的有效状态改变成1
-        loginTicketMapper.updateLoginTicket(ticket,1);
+        String redisKey = RedisKeyUtil.getTicketKey(ticket);
+        LoginTicket ticket1 = (LoginTicket) redisTemplate.opsForValue().get(redisKey);
+        ticket1.setStatus(1);
+        redisTemplate.opsForValue().set(redisKey,ticket1);
     }
 
     //从数据库中查出来ticket的值
     public LoginTicket getTicketValue(String ticket){
-        return loginTicketMapper.selectLoginTicket(ticket);
+        //return loginTicketMapper.selectLoginTicket(ticket);
+        String redisKey = RedisKeyUtil.getTicketKey(ticket);
+        return (LoginTicket) redisTemplate.opsForValue().get(redisKey);
     }
 
     public int updateHeaderUrl(int userId,String headerUrl){
-        return userMapperMybatis.updateHeader(headerUrl,userId);
+        int row = userMapperMybatis.updateHeader(headerUrl,userId);
+        cleanCache(userId);
+        return row;
     }
 
     public User findUserByName(String userName){
         return userMapperMybatis.selectUserByUsername(userName);
+    }
+
+    //对于一些频繁访问的方法采用redis重构
+    //1.优先从缓存中取值
+    private User getCache(int userId){
+        String userKey = RedisKeyUtil.getUserKey(userId);
+        return (User) redisTemplate.opsForValue().get(userKey);
+    }
+    //2. 取不到值时初始化缓存数据
+    private User initCache(int userId){
+        User user = userMapperMybatis.selectUserById(userId);
+        String redisKey = RedisKeyUtil.getUserKey(userId);
+        redisTemplate.opsForValue().set(redisKey,user,3600, TimeUnit.SECONDS);
+        return user;
+    }
+    //3. 数据变更时清除缓存数据
+    private void cleanCache(int userId){
+        String redisKey = RedisKeyUtil.getUserKey(userId);
+        redisTemplate.delete(redisKey);
     }
 }
