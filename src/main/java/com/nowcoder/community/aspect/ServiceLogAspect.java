@@ -26,9 +26,16 @@ public class ServiceLogAspect {
 
     @Before("pointCut()")
     public void before(JoinPoint joinPoint){
-        //用户XX在XXXip访问了com.nowcoder.community.service
+        //用户ipXX在几时访问了com.nowcoder.community.service
         //通过RequestContextHolder来获取request,不能直接变量声明
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        if(attributes == null){
+            //由于之前是打印用户ipXX在几时访问了service
+            //但是，在加入kafka后，出现了消费者对象调用service的情况
+            //消费者调用service时没有ip可以获取，此时的attribute为空
+            //这种情况时，直接返回，不打印日志
+            return;
+        }
         HttpServletRequest request = attributes.getRequest();
         String ip = request.getRemoteHost();
         String now = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());

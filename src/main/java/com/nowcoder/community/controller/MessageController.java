@@ -1,10 +1,13 @@
 package com.nowcoder.community.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.nowcoder.community.entity.Message;
 import com.nowcoder.community.entity.Page;
 import com.nowcoder.community.entity.User;
+import com.nowcoder.community.event.EventProducer;
 import com.nowcoder.community.service.MessageService;
 import com.nowcoder.community.service.UserSerivce;
+import com.nowcoder.community.util.CommunityConstant;
 import com.nowcoder.community.util.CommunityUtil;
 import com.nowcoder.community.util.HostHolder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,11 +17,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.util.HtmlUtils;
 
 import java.util.*;
 
 @Controller
-public class MessageController {
+public class MessageController implements CommunityConstant {
     @Autowired
     private MessageService messageService;
     //因为要获取当前用户的私信列表,所以要引入
@@ -129,6 +133,26 @@ public class MessageController {
         message.setCreateTime(new Date());
         messageService.addMessage(message);
         return CommunityUtil.getJsonString(0);
+    }
+
+    @RequestMapping(path = "/notice/list",method = RequestMethod.GET)
+    public String getNoticeList(Model model){
+        User user = hostHolder.getUser();
+        //查询评论类的通知
+        Message message = messageService.findLatestNotice(user.getId(),TOPIC_COMMENT);
+        Map<String,Object> messageVo = new HashMap<>();
+        if(message != null){
+            messageVo.put("message",message);
+            //此时字符串中没有转义字符了
+            String content = HtmlUtils.htmlUnescape(message.getContent());
+            Map<String,Object> data = JSONObject.parseObject(content,HashMap.class);
+            messageVo.put("user",userSerivce.selectUserByID((Integer) data.get("userId")));
+            messageVo.put("entityType",data.get("entityType"));
+        }
+        int unreadCount = messageService.findNoticeUnreadCount(user.getId(),TOPIC_COMMENT);
+        //查询点赞类的通知
+
+        //查询关注类的通知
     }
 
 

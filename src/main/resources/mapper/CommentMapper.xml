@@ -9,7 +9,7 @@
     </sql>
 
     <sql id="insertFields">
-        id,password,salt,email,type,status,activation_code,header_url,create_time
+        id,user_id,entity_type,entity_id,target_id,status,content,create_time
     </sql>
 
     <select id="selectCommentByEntity" resultType="com.nowcoder.community.entity.Comment">
@@ -28,5 +28,17 @@
         where status = 0
         and entity_type = #{entityType}
         and entity_id = #{entityId}
+    </select>
+
+    <insert id="insertComment" parameterType="com.nowcoder.community.entity.Comment" keyProperty="id">
+        insert into comment (<include refid="insertFields"></include>)
+        VALUES
+        (#{id},#{userId},#{entityType},#{entityId},#{targetId},#{content},#{status},#{createTime})
+    </insert>
+
+    <select id="selectCommentById" resultType="com.nowcoder.community.entity.Comment">
+        select <include refid="selectFields"></include>
+        from comment
+        where id = #{commentId}
     </select>
 </mapper>
