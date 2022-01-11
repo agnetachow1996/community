@@ -24,6 +24,7 @@ public class LoginTicketInterceptor implements HandlerInterceptor {
 
 
     //在请求开始之初，设置好线程用于保持用户的状态
+    @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
                              Object handler) throws Exception {
         //从cookie中获取凭证,cookie的登录信息凭证都用ticket标注了
@@ -43,6 +44,7 @@ public class LoginTicketInterceptor implements HandlerInterceptor {
         return true;
     }
     //该方法是在模板引擎加载之前运行，因此需要在模板运行时加入用户信息，这样登录时可以加载出来
+    @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
                            ModelAndView modelAndView) throws Exception {
         User user = hostHolder.getUser();
@@ -51,8 +53,9 @@ public class LoginTicketInterceptor implements HandlerInterceptor {
            // System.out.println("登录用户成功");
         }
     }
+    @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler,
-                                 Exception ex) {
+                                Exception ex) {
         //在请求结束后清除线程。
         //System.out.println("删除用户线程");
         hostHolder.clear();
