@@ -1,6 +1,8 @@
 package com.nowcoder.community.controller;
 
-import com.nowcoder.community.entity.*;
+import com.nowcoder.community.entity.Event;
+import com.nowcoder.community.entity.Page;
+import com.nowcoder.community.entity.User;
 import com.nowcoder.community.event.EventProducer;
 import com.nowcoder.community.service.FollowService;
 import com.nowcoder.community.service.UserSerivce;
