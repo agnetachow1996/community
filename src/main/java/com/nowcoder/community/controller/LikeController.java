@@ -2,6 +2,7 @@ package com.nowcoder.community.controller;
 
 import com.nowcoder.community.entity.Event;
 import com.nowcoder.community.entity.User;
+import com.nowcoder.community.event.EventProducer;
 import com.nowcoder.community.service.CommentService;
 import com.nowcoder.community.service.DiscussService;
 import com.nowcoder.community.service.LikeService;
