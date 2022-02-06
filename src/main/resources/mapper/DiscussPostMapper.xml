@@ -38,9 +38,9 @@
         and id=#{discussID}
     </select>
 
-    <insert id="insertDiscussPost" parameterType="com.nowcoder.community.entity.Discuss">
+    <insert id="insertDiscussPost" parameterType="com.nowcoder.community.entity.Discuss" keyProperty="id">
         insert into discuss_post(<include refid="insertFields"></include>)
-        values(#(userId),#(title),#(content),#(type),#(status),#(createTime),#(commentCount),#(score))
+        values(#{userId},#{title},#{content},#{type},#{status},#{createTime},#{commentCount},#{(score})
     </insert>
 
 </mapper>

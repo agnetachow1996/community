@@ -145,8 +145,8 @@ public class MessageController implements CommunityConstant {
         User user = hostHolder.getUser();
         //查询评论类的通知
         Message message = messageService.findLatestNotice(user.getId(),TOPIC_COMMENT);
-        Map<String,Object> messageVo = new HashMap<>();
         if(message != null){
+            Map<String,Object> messageVo = new HashMap<>();
             messageVo.put("message",message);
             //此时字符串中没有转义字符了
             String content = HtmlUtils.htmlUnescape(message.getContent());
@@ -155,17 +155,18 @@ public class MessageController implements CommunityConstant {
             messageVo.put("entityType",data.get("entityType"));
             messageVo.put("entityId",data.get("entityId"));
             messageVo.put("postId",data.get("postId"));
+            int count = messageService.findNoticeCount(user.getId(),TOPIC_COMMENT);
+            messageVo.put("count",count);
+            int unread = messageService.findNoticeUnreadCount(user.getId(),TOPIC_COMMENT);
+            messageVo.put("unread",unread);
+            model.addAttribute("commentNotice",messageVo);
         }
-        int count = messageService.findNoticeCount(user.getId(),TOPIC_COMMENT);
-        messageVo.put("count",count);
-        int unread = messageService.findNoticeUnreadCount(user.getId(),TOPIC_COMMENT);
-        messageVo.put("unread",unread);
-        model.addAttribute("commentNotice",messageVo);
+
 
         //查询点赞类的通知
         message = messageService.findLatestNotice(user.getId(),TOPIC_LIKE);
-        messageVo = new HashMap<>();
         if(message != null){
+            Map<String,Object> messageVo = new HashMap<>();
             messageVo.put("message",message);
             //此时字符串中没有转义字符了
             String content = HtmlUtils.htmlUnescape(message.getContent());
@@ -174,17 +175,18 @@ public class MessageController implements CommunityConstant {
             messageVo.put("entityType",data.get("entityType"));
             messageVo.put("entityId",data.get("entityId"));
             messageVo.put("postId",data.get("postId"));
+            int count = messageService.findNoticeCount(user.getId(),TOPIC_LIKE);
+            messageVo.put("count",count);
+            int unread = messageService.findNoticeUnreadCount(user.getId(),TOPIC_LIKE);
+            messageVo.put("unread",unread);
+            model.addAttribute("likeNotice",messageVo);
         }
-        count = messageService.findNoticeCount(user.getId(),TOPIC_LIKE);
-        messageVo.put("count",count);
-        unread = messageService.findNoticeUnreadCount(user.getId(),TOPIC_LIKE);
-        messageVo.put("unread",unread);
-        model.addAttribute("likeNotice",messageVo);
+
 
         //查询关注类的通知
         message = messageService.findLatestNotice(user.getId(),TOPIC_FOLLOW);
         if(message != null){
-            messageVo = new HashMap<>();
+            Map<String,Object> messageVo = new HashMap<>();
             messageVo.put("message",message);
             //此时字符串中没有转义字符了
             String content = HtmlUtils.htmlUnescape(message.getContent());
@@ -193,12 +195,13 @@ public class MessageController implements CommunityConstant {
             messageVo.put("entityType",data.get("entityType"));
             messageVo.put("entityId",data.get("entityId"));
             messageVo.put("postId",data.get("postId"));
+            int count = messageService.findNoticeCount(user.getId(),TOPIC_FOLLOW);
+            messageVo.put("count",count);
+            int unread = messageService.findNoticeUnreadCount(user.getId(),TOPIC_FOLLOW);
+            messageVo.put("unread",unread);
+            model.addAttribute("followNotice",messageVo);
         }
-        count = messageService.findNoticeCount(user.getId(),TOPIC_FOLLOW);
-        messageVo.put("count",count);
-        unread = messageService.findNoticeUnreadCount(user.getId(),TOPIC_FOLLOW);
-        messageVo.put("unread",unread);
-        model.addAttribute("followNotice",messageVo);
+
         // 这里是所有未读的信息数量
         int letterUnreadCount = messageService.
                 selectConversationUnreadCount(hostHolder.getUser().getId(),null);
