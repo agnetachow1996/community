@@ -55,7 +55,7 @@ public class DiscussPostController implements CommunityConstant{
         discuss.setUserId(user.getId());
         discuss.setCreateTime(new Date());
         discussService.addDiscussPost(discuss);
-        //触发发帖事件
+        //触发发帖事件，这里触发的事件是将发帖数据传输到ES服务器上
         Event event = new Event()
                 .setTopic(TOPIC_PUBLISH)
                 .setUserId(user.getId())

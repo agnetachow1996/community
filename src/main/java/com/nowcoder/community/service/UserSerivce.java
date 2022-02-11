@@ -11,6 +11,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
@@ -22,7 +25,7 @@ import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 @Service
-public class UserSerivce implements CommunityConstant {
+public class UserSerivce implements CommunityConstant, UserDetailsService {
 
     //this is mybatis
     @Autowired
@@ -211,5 +214,11 @@ public class UserSerivce implements CommunityConstant {
     private void cleanCache(int userId){
         String redisKey = RedisKeyUtil.getUserKey(userId);
         redisTemplate.delete(redisKey);
+    }
+
+    //该方法的功能是根据用户名查用户
+    @Override
+    public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
+        return this.findUserByName(userName);
     }
 }

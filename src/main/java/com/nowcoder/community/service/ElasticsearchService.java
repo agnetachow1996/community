@@ -17,6 +17,8 @@ import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
+
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
@@ -26,6 +28,7 @@ import java.util.List;
  * 1. 将数据存放入ES服务器中
  * 2. 删帖的时候异步在ES服务器上删除帖子
  * 3. 增贴的时候异步在ES服务器上增加帖子*/
+@Service
 public class ElasticsearchService {
     @Autowired
     private DiscussRepository repository;
@@ -50,7 +53,7 @@ public class ElasticsearchService {
 
     //高亮搜索
     public SearchResult searchDiscuss(String keyword, int current, int limit) throws IOException {
-        SearchRequest searchRequest = new SearchRequest("discusspost");//discusspost是索引名，就是表名
+        SearchRequest searchRequest = new SearchRequest("discuss");//discusspost是索引名，就是表名
 
         //高亮
         HighlightBuilder highlightBuilder = new HighlightBuilder();
@@ -72,6 +75,7 @@ public class ElasticsearchService {
                 .highlighter(highlightBuilder);
         // 查询结果
         searchRequest.source(searchSourceBuilder);
+        System.out.println(searchSourceBuilder.toString());
         SearchResponse searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
         long total = searchResponse.getHits().getTotalHits().value;
         List<Discuss> list = new LinkedList<>();

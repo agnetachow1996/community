@@ -1,10 +1,16 @@
 package com.nowcoder.community.entity;
 
 import lombok.Data;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 @Data
-public class User {
+public class User implements UserDetails {
     private int id;
 
     private String userName;
@@ -72,10 +78,6 @@ public class User {
         return userName;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
     public String getSalt() {
         return salt;
     }
@@ -102,6 +104,53 @@ public class User {
 
     public Date getCreateTime() {
         return createTime;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    @Override
+    public String getUsername() {
+        return null;
+    }
+
+    //SpringSecurity需要实现的方法
+    //true:账号未过期
+    //具体含义可以查一下
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    //凭证未过期
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
+    //获取权限，springSecurity中的权限都是字符串
+    //多种用户需要返回权限集合
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        List<GrantedAuthority> authList = new ArrayList<>();
+        authList.add((GrantedAuthority) () -> {
+            switch (type){
+                case 1:return "ADMIN";
+                default:return "USER";
+            }
+        });
+        return null;
     }
 
 }

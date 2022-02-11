@@ -13,8 +13,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Autowired
     private LoginTicketInterceptor loginTicketInterceptor;
 
-    @Autowired
-    private LoginRequiredInterceptor loginRequiredInterceptor;
+//    @Autowired  // 废弃拦截器，使用springsecurity拦截
+//    private LoginRequiredInterceptor loginRequiredInterceptor;
 
     @Autowired
     private MessageInterceptor messageInterceptor;
@@ -26,8 +26,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
         //exclude是排除拦截，即访问静态资源时不需要拦截
         registry.addInterceptor(loginTicketInterceptor)
                 .excludePathPatterns("/**/*.css","/**/*.jpg","/**/*.png","/**/*.jpeg");
-        registry.addInterceptor(loginRequiredInterceptor)
-                .excludePathPatterns("/**/*.css","/**/*.jpg","/**/*.png","/**/*.jpeg");
+//        registry.addInterceptor(loginRequiredInterceptor)
+//                .excludePathPatterns("/**/*.css","/**/*.jpg","/**/*.png","/**/*.jpeg");
         registry.addInterceptor(messageInterceptor)
                 .excludePathPatterns("/**/*.css","/**/*.jpg","/**/*.png","/**/*.jpeg");
     }
