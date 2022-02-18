@@ -43,4 +43,16 @@ public class DiscussService{
     public Discuss findDiscussByID(int discussID){
         return discussMapper.findDiscussByID(discussID);
     }
+
+    public int updateCommentCount(int id,int commentCount){
+        return discussMapper.updateCommentCount(id, commentCount);
+    }
+
+    public int updateType(int id,int type){
+        return discussMapper.updateType(id, type);
+    }
+
+    public int updateStatus(int id,int status){
+        return discussMapper.updateType(id, status);
+    }
 }

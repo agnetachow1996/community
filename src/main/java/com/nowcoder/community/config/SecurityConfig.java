@@ -1,6 +1,5 @@
 package com.nowcoder.community.config;
 
-import com.mysql.cj.exceptions.PasswordExpiredException;
 import com.nowcoder.community.entity.User;
 import com.nowcoder.community.service.UserSerivce;
 import com.nowcoder.community.util.CommunityConstant;
@@ -17,16 +16,13 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 
@@ -94,7 +90,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Comm
         // 一旦写上super.configure(http)，就会拦截所有的请求并要求认证，因此要覆盖父类的configure
         //super.configure(http);
 
-        //设置需要登录才能访问的页面
+        //设置需要登录才能访问的页面,在该方法中禁用了防止CSRF攻击的防护，可以自行开启
         http.authorizeRequests()
                 .antMatchers("/user/setting",
                         "/user/upload",
@@ -106,7 +102,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Comm
                         "/follow",
                         "/unfollow")
                 .hasAnyAuthority(AUTHORITY_USER,AUTHORITY_ADMIN,AUTHORITY_MODERATOR)
-                .anyRequest().permitAll();
+                .antMatchers("/discuss/top")
+                .hasAnyAuthority(AUTHORITY_MODERATOR)
+                .antMatchers("/discuss/delete", "/discuss/wonderful","/data/**")
+                .hasAnyAuthority(AUTHORITY_ADMIN)
+                .anyRequest().permitAll().and().csrf().disable();
 
         // 两种处理情况
         http.exceptionHandling().authenticationEntryPoint(new AuthenticationEntryPoint() {
@@ -159,5 +159,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Comm
 
                     }
                 }); //登录失败处理
+
+        // security默认拦截/logout退出的操作，进行退出处理
+        // 因此需要覆盖其默认的逻辑才能执行自定义的登录退出模块
+        // 这里通过设置一个不存在的路径，让secrity拦截，从而使默认拦截失效
+        http.logout().logoutUrl("/fff");
     }
 }

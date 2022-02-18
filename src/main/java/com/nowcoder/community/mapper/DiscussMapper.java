@@ -17,4 +17,10 @@ public interface DiscussMapper{
     int insertDiscussPost(Discuss post);
 
     Discuss findDiscussByID(int discussID);
+
+    int updateCommentCount(int id, int commentCount);
+
+    int updateType(int id, int type);
+
+    int updateStatus(int id,int status);
 }

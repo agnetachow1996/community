@@ -5,7 +5,12 @@ import com.nowcoder.community.entity.User;
 import com.nowcoder.community.service.UserSerivce;
 import com.nowcoder.community.util.CookieUtil;
 import com.nowcoder.community.util.HostHolder;
+import org.apache.tomcat.util.http.parser.Authorization;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -38,7 +43,11 @@ public class LoginTicketInterceptor implements HandlerInterceptor {
                 User user = userSerivce.selectUserByID(loginTicket.getUserId());
                 //在本次请求中持有用户,hostHolder创建一个线程，用户的键值对
                 hostHolder.setUsers(user);
-               // System.out.println("创建用户线程");
+                // 构建用户认证结果，并存入securityContext，以便security进行授权,认证结果通过用户名密码认证方式获取
+                Authentication authentication = new UsernamePasswordAuthenticationToken(
+                        user,user.getPassword(),userSerivce.getAuthorities(user.getId()));
+                // 设置context的环境,把登录用户的相关信息传入
+                SecurityContextHolder.setContext(new SecurityContextImpl(authentication));
             }
         }
         return true;

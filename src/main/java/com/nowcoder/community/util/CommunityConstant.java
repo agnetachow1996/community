@@ -59,4 +59,8 @@ public interface CommunityConstant {
      *权限：版主
      * */
     String AUTHORITY_MODERATOR = "moderator";
+    /**
+     * 主题：删除
+     * */
+    String TOPIC_DELETE = "delete";
 }
