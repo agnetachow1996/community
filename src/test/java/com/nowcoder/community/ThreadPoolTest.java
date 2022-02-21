@@ -1,5 +1,6 @@
 package com.nowcoder.community;
 
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mybatis.spring.annotation.MapperScan;
 import org.slf4j.Logger;
@@ -26,4 +27,37 @@ public class ThreadPoolTest {
     //JDK可执行定时任务的线程池
     private ScheduledExecutorService scheduledExecutorService =
             Executors.newScheduledThreadPool(5);
+
+    private void sleep(long m){
+        try {
+            Thread.sleep(m);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        // 1.JDK普通线程
+    }
+
+    @Test
+    public void testExecutor(){
+        Runnable task = new Runnable() {
+            @Override
+            public void run() {
+                logger.debug("hello Executor!");
+            }
+        };
+        for(int i = 0;i < 10;i++){
+            executorService.submit(task);
+        }
+        sleep(10000);
+    }
+
+    @Test
+    private void testThreadPoolTaskSchedular(){
+        Runnable task = new Runnable() {
+            @Override
+            public void run() {
+
+            }
+        };
+    }
 }
