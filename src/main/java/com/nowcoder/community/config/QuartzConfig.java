@@ -12,15 +12,19 @@ import org.springframework.scheduling.quartz.SimpleTriggerFactoryBean;
 public class QuartzConfig {
     //问，一般bean注解是修饰类的，为什么修饰该方法却不报错？
     //答：FactoryBean的作用是可简化bean的实例化过程
-    // bean的实例化过程有：
+    // FactoryBean的实例化bean过程有：
     // 1.通过FactoryBean封装bean的实例化过程
+    // 2.FactoryBean装配到spring容器内
+    // 3.将FactoryBean注入给其他的bean
+    // 4.该bean得到的是FacoryBean所管理的对象实例
     @Bean
     public JobDetailFactoryBean alphaJobDetail(){
         return null;
     }
 
+    //配置Trigger(SimpleTriggerFactoryBean, CronTriggerFactoryBean)
     @Bean
     public SimpleTriggerFactoryBean alphaTrigger(JobDetail alphaJobDetail){
-
+        return null;
     }
 }
