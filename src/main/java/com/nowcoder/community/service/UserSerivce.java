@@ -11,6 +11,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -199,6 +200,7 @@ public class UserSerivce implements CommunityConstant, UserDetailsService {
     //1.优先从缓存中取值
     private User getCache(int userId){
         String userKey = RedisKeyUtil.getUserKey(userId);
+        //redisTemplate.setValueSerializer(new StringRedisSerializer());
         return (User) redisTemplate.opsForValue().get(userKey);
     }
     //2. 取不到值时初始化缓存数据

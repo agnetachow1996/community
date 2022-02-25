@@ -13,6 +13,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.configurers.DefaultLoginPageConfigurer;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -33,7 +34,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Comm
     @Override
     public void configure(WebSecurity web) throws Exception{
         // 忽略静态资源的访问
-        web.ignoring().antMatchers("/resource/**");
+        web.ignoring().antMatchers("/resources/**");
+        //web.ignoring().antMatchers("/resources/templates/index.html");
     }
 
     // 权限管理一般两个操作：授权和认证
@@ -89,7 +91,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Comm
     protected void configure(HttpSecurity http) throws Exception{
         // 一旦写上super.configure(http)，就会拦截所有的请求并要求认证，因此要覆盖父类的configure
         //super.configure(http);
-
+        http.removeConfigurer(DefaultLoginPageConfigurer.class); //将默认加载的登录页配置删除
         //设置需要登录才能访问的页面,在该方法中禁用了防止CSRF攻击的防护，可以自行开启
         http.authorizeRequests()
                 .antMatchers("/user/setting",
@@ -101,12 +103,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Comm
                         "/like",
                         "/follow",
                         "/unfollow")
-                .hasAnyAuthority(AUTHORITY_USER,AUTHORITY_ADMIN,AUTHORITY_MODERATOR)
+                .hasAnyAuthority(
+                        AUTHORITY_USER,
+                        AUTHORITY_ADMIN,
+                        AUTHORITY_MODERATOR)
                 .antMatchers("/discuss/top")
                 .hasAnyAuthority(AUTHORITY_MODERATOR)
-                .antMatchers("/discuss/delete", "/discuss/wonderful","/data/**")
+                .antMatchers(
+                        "/discuss/delete",
+                        "/discuss/wonderful",
+                        "/data/**")
                 .hasAnyAuthority(AUTHORITY_ADMIN)
-                .anyRequest().permitAll().and().csrf().disable();
+                .anyRequest().permitAll().and().formLogin()
+                .loginPage("/dologin")
+                .and().csrf().disable();
 
         // 两种处理情况
         http.exceptionHandling().authenticationEntryPoint(new AuthenticationEntryPoint() {

@@ -35,7 +35,7 @@ public class ElasticSearchTest {
 
     @Test
     public void insertData() throws IOException {
-        List<Discuss> result = discussService.selectDiscussPosts(0,0,200);
+        List<Discuss> result = discussService.selectDiscussPosts(0,0,200,0);
         List<Map<String,Object>> bulk = new ArrayList<>();
         for(int i = 0;i < result.size();i++){
             Discuss discuss = result.get(i);

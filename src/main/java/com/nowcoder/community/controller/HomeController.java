@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,11 +32,13 @@ public class HomeController implements CommunityConstant {
     private LikeService likeService;
 
     @RequestMapping(path = "/index", method = RequestMethod.GET)
-    public String getIndexPage(Model model, Page page){
+    public String getIndexPage(Model model, Page page,
+                               @RequestParam(name="orderMode",defaultValue = "0") int orderMode){
         //方法调用前，springmvc会自动实例化model和Page,所以分页时不需要传入page变量到前端
+        //这里的orderMode使用get明文传输，如果用value传输需要用POST请求，比较麻烦
         page.setRows(discussService.selectDiscussPostRows(0));
-        page.setPath("/index");
-        List<Discuss> list = discussService.selectDiscussPosts(0,page.getOffset(),page.getLimit());
+        page.setPath("/index?orderMode="+orderMode);
+        List<Discuss> list = discussService.selectDiscussPosts(0,page.getOffset(),page.getLimit(), orderMode);
         List<Map<String,Object>> discussPost = new ArrayList<>();
         if(list != null){
             for(Discuss item:list){
@@ -49,6 +52,7 @@ public class HomeController implements CommunityConstant {
             }
         }
         model.addAttribute("discussPost",discussPost);
+        model.addAttribute("orderMode",orderMode);
         return "/index";
     }
 

@@ -32,8 +32,8 @@ public class DiscussService{
 
     }
 
-    public List<Discuss> selectDiscussPosts(int userId,int offset,int limit){
-        return discussMapper.selectDiscussPosts(userId,offset,limit);
+    public List<Discuss> selectDiscussPosts(int userId,int offset,int limit, int orderMode){
+        return discussMapper.selectDiscussPosts(userId,offset,limit,orderMode);
     }
 
     public int selectDiscussPostRows(int userId){
@@ -54,5 +54,9 @@ public class DiscussService{
 
     public int updateStatus(int id,int status){
         return discussMapper.updateType(id, status);
+    }
+
+    public int updateScore(Integer postId, double score) {
+        return discussMapper.updateScore(postId, score);
     }
 }

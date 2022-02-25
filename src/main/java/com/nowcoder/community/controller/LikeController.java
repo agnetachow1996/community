@@ -9,7 +9,9 @@ import com.nowcoder.community.service.LikeService;
 import com.nowcoder.community.util.CommunityConstant;
 import com.nowcoder.community.util.CommunityUtil;
 import com.nowcoder.community.util.HostHolder;
+import com.nowcoder.community.util.RedisKeyUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -34,6 +36,9 @@ public class LikeController implements CommunityConstant {
 
     @Autowired
     private CommentService commentService;
+
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     //该方法可以使用拦截器拦截，如果用户没有登录则不能访问点赞方法
     @RequestMapping(path = "/like",method = RequestMethod.POST)
@@ -60,6 +65,11 @@ public class LikeController implements CommunityConstant {
                     .setUserId(hostHolder.getUser().getId())
                     .setData("postId",postId);
             producer.fireEvent(event);
+        }
+        // 帖子才计分
+        if(entityType == ENTITY_TYPE_POST){
+            String redisKey = RedisKeyUtil.getPostScoreKey();
+            redisTemplate.opsForSet().add(redisKey, postId);
         }
         //数据传输成功
         return CommunityUtil.getJsonString(0,null,map);
