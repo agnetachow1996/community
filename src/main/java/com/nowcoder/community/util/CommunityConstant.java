@@ -40,6 +40,10 @@ public interface CommunityConstant {
     * */
     String TOPIC_FOLLOW = "follow";
     /*
+        kafka主题：分析
+    **/
+    String TOPIC_SHARE = "share";
+    /*
     kafka主题：发帖
     **/
     String TOPIC_PUBLISH = "publish";
